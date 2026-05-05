@@ -1,40 +1,102 @@
-import { useNavigate } from 'react-router-dom';
-
-const CATEGORIES: string[] = ['Women', 'Men', 'Accessories', 'Footwear'];
+import { Link } from 'react-router-dom';
+import HeroCarousel from '../components/HeroCarousel';
+import SectionGrid from '../components/SectionGrid';
+import ProductCard from '../components/ProductCard';
+import { heroSlides, homepageSections } from '../data/navigation';
+import { products } from '../data/products';
 
 export default function Home() {
-  const nav = useNavigate();
+  const featured = products.slice(0, 6);
 
   return (
-    <main className="mt-16">
-      {/* HERO */}
-      <section className="h-[70vh] bg-[url('https://picsum.photos/1400/900?fashion')] bg-cover bg-center flex items-center">
-        <div className="container text-white">
-          <p className="badge text-white/80">New Season</p>
-          <h1 className="text-5xl md:text-6xl font-semibold mt-2">
-            Effortless Style
-          </h1>
-          <button
-            onClick={() => nav('/products')}
-            className="btn-primary mt-6"
-          >
-            Shop Now
-          </button>
+    <main>
+      {/* Hero */}
+      <HeroCarousel slides={heroSlides} />
+
+      {/* New User Strip */}
+      <Link to="/products">
+        <img src="/assets/banners/new-user-strip.jpg" alt="New user offer" className="w-full block" />
+      </Link>
+
+      {/* HP Strip */}
+      <Link to="/products">
+        <img src="/assets/banners/hp-strip.jpg" alt="Offer Strip" className="w-full block my-1" />
+      </Link>
+
+      {/* Mothers Day */}
+      <Link to="/products?cat=women">
+        <img src="/assets/banners/mothers-day.jpg" alt="Mother's Day" className="w-full block mb-1" />
+      </Link>
+
+      {/* Tommy / CK */}
+      <Link to="/products?brand=tommy">
+        <img src="/assets/banners/th-ck.jpg" alt="Tommy Hilfiger Calvin Klein" className="w-full block mb-1" />
+      </Link>
+
+      {/* New Arrivals strip */}
+      <Link to="/products?tag=NEW">
+        <img src="/assets/banners/new-arrival.jpg" alt="New Arrivals" className="w-full block mb-1" />
+      </Link>
+
+      {/* Suits strip */}
+      <Link to="/products?cat=men&sub=suits-blazers">
+        <img src="/assets/banners/suits.jpg" alt="Suits & Blazers" className="w-full block mb-4" />
+      </Link>
+
+      {/* Dynamic Homepage Sections (Topline, Denim, Brands, Innercomfort, MoreToWin) */}
+      <div className="px-0">
+        {homepageSections.map((section) => (
+          <SectionGrid key={section.id} section={section} />
+        ))}
+      </div>
+
+      {/* Select Coupons */}
+      <div className="mb-4">
+        <img src="/assets/banners/coupons-h.jpg" alt="Select Coupons" className="w-full block mb-1" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-1 px-0">
+          {[1,2,3,4].map((n) => (
+            <Link key={n} to="/products">
+              <img src={`/assets/banners/coupon-${n}.jpg`} alt={`Coupon ${n}`} className="w-full block" />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* CT + ShopAll + On Repeat */}
+      <Link to="/products"><img src="/assets/banners/ct-h.jpg" alt="CT" className="w-full block mb-1" /></Link>
+      <Link to="/products"><img src="/assets/banners/shopall-h.jpg" alt="Shop All" className="w-full block mb-1" /></Link>
+      <Link to="/products"><img src="/assets/banners/on-repeat-h.jpg" alt="On Repeat" className="w-full block mb-4" /></Link>
+
+      {/* Featured Products */}
+      <section className="max-w-[1230px] mx-auto px-4 mb-12">
+        <div className="flex items-baseline justify-between mb-6">
+          <div>
+            <p className="text-[10px] tracking-[3px] text-neutral-400 uppercase mb-1">Handpicked</p>
+            <h2 className="font-bold text-xl tracking-[2px] uppercase">Trending Now</h2>
+          </div>
+          <Link to="/products" className="text-xs border-b border-black pb-0.5 tracking-wider hover:text-[#ff3399] hover:border-[#ff3399] transition-colors">
+            VIEW ALL
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {featured.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>
 
-      {/* CATEGORIES */}
-      <section className="container py-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-        {CATEGORIES.map((c) => (
-          <div
-            key={c}
-            onClick={() => nav('/products')}
-            className="h-40 bg-neutral-100 rounded-lg flex items-center justify-center cursor-pointer hover:shadow"
-          >
-            <span className="font-medium">{c}</span>
-          </div>
-        ))}
+      {/* Testimonials */}
+      <section className="max-w-[1230px] mx-auto px-4 mb-12">
+        <h2 className="font-bold text-lg tracking-[2px] uppercase text-center mb-6">What Our Customers Say</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[1,2,3,4].map((n) => (
+            <img key={n} src={`/assets/banners/testimonial-${n}.jpg`} alt={`Testimonial ${n}`} className="w-full block rounded" />
+          ))}
+        </div>
       </section>
+
+      {/* Download App */}
+      <Link to="https://www.nnnow.com/apps" target="_blank">
+        <img src="/assets/banners/download-app.jpg" alt="Download App" className="w-full block mb-4" />
+      </Link>
     </main>
   );
 }
